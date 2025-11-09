@@ -15,12 +15,17 @@ from diffusers.models.attention_processor import (
     AttnAddedKVProcessor,
     AttnProcessor,
 )
+# Version-aware import for PositionNet (renamed to GLIGENTextBoundingboxProjection in diffusers >= 0.26.0)
+try:
+    from diffusers.models.embeddings import PositionNet
+except ImportError:
+    from diffusers.models.embeddings import GLIGENTextBoundingboxProjection as PositionNet
+
 from diffusers.models.embeddings import (
     GaussianFourierProjection,
     ImageHintTimeEmbedding,
     ImageProjection,
     ImageTimeEmbedding,
-    PositionNet,
     TextImageProjection,
     TextImageTimeEmbedding,
     TextTimeEmbedding,
