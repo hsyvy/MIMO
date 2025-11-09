@@ -4,12 +4,24 @@ from typing import Any, Dict, Optional
 
 import torch
 from diffusers.configuration_utils import ConfigMixin, register_to_config
-from diffusers.models.embeddings import CaptionProjection
-from diffusers.models.lora import LoRACompatibleConv, LoRACompatibleLinear
 from diffusers.models.modeling_utils import ModelMixin
 from diffusers.models.normalization import AdaLayerNormSingle
 from diffusers.utils import USE_PEFT_BACKEND, BaseOutput, deprecate, is_torch_version
 from torch import nn
+
+# Version-aware import for CaptionProjection (renamed to PixArtAlphaTextProjection in diffusers >= 0.26.0)
+try:
+    from diffusers.models.embeddings import CaptionProjection
+except ImportError:
+    from diffusers.models.embeddings import PixArtAlphaTextProjection as CaptionProjection
+
+# Version-aware import for LoRA layers (deprecated in diffusers >= 0.27.0, removed in v1.0.0)
+try:
+    from diffusers.models.lora import LoRACompatibleConv, LoRACompatibleLinear
+except ImportError:
+    # Fallback when removed in v1.0.0 - use standard layers
+    LoRACompatibleConv = nn.Conv2d
+    LoRACompatibleLinear = nn.Linear
 
 from .attention import BasicTransformerBlock
 
