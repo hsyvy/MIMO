@@ -8,7 +8,7 @@ pip install -e . -v
 cd ..
 
 pip install -e sam_automask
-pip install -e chumpy
+# pip install -e chumpy
 pip install -e .[all]
 pip install -v -e third-party/ViTPose
 pip install -U trimesh
